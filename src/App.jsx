@@ -41,7 +41,7 @@ function App() {
               <Hero />
               <About />
               <Services />
-              <Portfolio/>
+              {/* <Portfolio/> */}
               <Process />
               <TechStack />
               <Contact />

@@ -9,62 +9,51 @@ const Services = () => {
     {
       title: "Web Application Development",
       description:
-        "Custom web applications built with care and attention to detail. We're passionate about creating solutions that work perfectly for your needs.",
-      icon: "💼",
+        "Custom web applications built with modern technologies. Scalable solutions designed to meet your business requirements.",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      ),
       features: [
         "Full-Stack Development",
-        "Responsive Design",
-        "Modern Technologies",
-        "Personal Support",
-      ],
-      pricing: "Starting from ₹75,000",
-      pricingRange: "₹75,000 - ₹1,50,000",
-      hourlyRate: "₹5,500/hour",
-    },
-    {
-      title: "Small Business Websites",
-      description:
-        "Professional websites for small businesses and startups. We understand budget constraints and deliver maximum value.",
-      icon: "🌐",
-      features: [
-        "Professional Design",
-        "Mobile-Friendly",
-        "SEO Optimized",
-        "Easy to Update",
-      ],
-      pricing: "Starting from ₹45,000",
-      pricingRange: "₹45,000 - ₹85,000",
-      hourlyRate: "₹5,500/hour",
-    },
-    {
-      title: "API Development",
-      description:
-        "Clean, well-documented APIs for your applications. We focus on building reliable backend services that scale with your business.",
-      icon: "🔗",
-      features: [
-        "RESTful API Design",
         "Database Integration",
-        "Secure Authentication",
-        "Clear Documentation",
+        "API Development",
+        "Cloud Deployment"
       ],
-      pricing: "Starting from ₹55,000",
-      pricingRange: "₹55,000 - ₹1,20,000",
-      hourlyRate: "₹5,500/hour",
     },
     {
-      title: "Website Maintenance",
+      title: "Business Websites",
       description:
-        "Keep your website running smoothly with our ongoing maintenance services. We're here when you need us.",
-      icon: "🔧",
+        "Professional websites for businesses of all sizes. Modern, responsive designs that help establish your online presence.",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9m0 9c-5 0-9-4-9-9s4-9 9-9" />
+        </svg>
+      ),
       features: [
-        "Regular Updates",
-        "Bug Fixes",
-        "Performance Monitoring",
-        "Quick Response Time",
+        "Responsive Design",
+        "Content Management",
+        "SEO Optimization",
+        "Analytics Integration"
       ],
-      pricing: "₹5,500/hour",
-      pricingRange: "Flexible packages available",
-      hourlyRate: "₹5,500/hour",
+    },
+    {
+      title: "Technical Support & Maintenance",
+      description:
+        "Ongoing technical support and maintenance services to keep your applications running smoothly and up-to-date.",
+      icon: (
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      features: [
+        "Performance Monitoring",
+        "Security Updates",
+        "Bug Fixes",
+        "Feature Enhancements"
+      ],
     },
   ];
 
@@ -83,25 +72,24 @@ const Services = () => {
         <div className="text-center mb-16">
           {/* Main heading gradient to brand colors */}
           <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-emerald-600 bg-clip-text text-transparent sm:text-4xl">
-            What We Can Build For You
+            Our Services
           </h2>
           <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-            Quality web development services from a small, dedicated team based
-            in India who cares about your success
+            Comprehensive web development solutions designed to help your business succeed online.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <div
               key={index}
               className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-6"
             >
-              <div className="text-3xl mb-4">{service.icon}</div>
+              <div className="text-blue-600 mb-4">{service.icon}</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">
                 {service.title}
               </h3>
-              <p className="text-gray-600 mb-4 text-sm">
+              <p className="text-gray-600 mb-6">
                 {service.description}
               </p>
 
@@ -130,88 +118,15 @@ const Services = () => {
                 ))}
               </ul>
 
-              <div className="border-t pt-4">
-                {/* Pricing text color changed to deep blue */}
-                <div className="text-lg font-semibold text-blue-700">
-                  Let's Discuss Your Project
-                </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  Custom pricing based on your specific needs
-                </div>
-                <div className="text-xs text-gray-400 mt-1">
-                  Flexible payment options available
-                </div>
-                <button
-                  onClick={handleConsultation}
-                  className="mt-3 w-full bg-gradient-to-r from-blue-700 to-emerald-600 text-white py-2 px-4 rounded-lg hover:from-blue-800 hover:to-emerald-700 transition-all duration-200 text-sm font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                >
-                  {" "}
-                  {/* Button gradient to brand colors */}
-                  Get Free Consultation
-                </button>
-              </div>
+              <button
+                onClick={handleConsultation}
+                className="w-full bg-gradient-to-r from-blue-700 to-emerald-600 text-white py-2 px-4 rounded-lg hover:from-blue-800 hover:to-emerald-700 transition-all duration-200 font-medium shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              >
+                Request Consultation
+              </button>
             </div>
           ))}
-        </div>
-
-        {/* Enhanced trust building section */}
-        <div className="mt-16 text-center">
-          <div className="bg-white rounded-xl shadow-sm p-8 max-w-4xl mx-auto">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Why Our Small Team Delivers Big Value
-            </h3>
-            <div className="grid md:grid-cols-4 gap-6 text-sm text-gray-600">
-              <div>
-                <div className="text-2xl mb-2">🤝</div>
-                <strong className="text-gray-900">Direct Communication</strong>
-                <p>
-                  No account managers - you work directly with the developers
-                </p>
-              </div>
-              <div>
-                <div className="text-2xl mb-2">💰</div>
-                <strong className="text-gray-900">Competitive Rates</strong>
-                <p>Lower overhead means better prices for you</p>
-              </div>
-              <div>
-                <div className="text-2xl mb-2">⚡</div>
-                <strong className="text-gray-900">Agile & Fast</strong>
-                <p>Small team = quick decisions and faster delivery</p>
-              </div>
-              <div>
-                <div className="text-2xl mb-2">🎯</div>
-                <strong className="text-gray-900">Focused Attention</strong>
-                <p>Your project gets our full focus, not divided attention</p>
-              </div>
-            </div>
-
-            {/* Pricing transparency and consultation callouts */}
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
-              {" "}
-              {/* Themed background */}
-              <p className="text-blue-800 text-sm">
-                {" "}
-                {/* Themed text color */}
-                <strong>Fair & Transparent Pricing:</strong> We believe in
-                honest pricing based on project scope. Every project is unique,
-                so we'll discuss your specific needs and budget to find the best
-                solution.
-              </p>
-            </div>
-
-            <div className="mt-4 p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-              {" "}
-              {/* Themed background */}
-              <p className="text-emerald-800 text-sm">
-                {" "}
-                {/* Themed text color */}
-                <strong>Free Consultation:</strong> Let's discuss your project
-                goals and requirements. We'll provide a detailed proposal with
-                clear pricing - no hidden costs, ever.
-              </p>
-            </div>
-          </div>
-        </div>
+        </div>       
       </div>
     </section>
   );
