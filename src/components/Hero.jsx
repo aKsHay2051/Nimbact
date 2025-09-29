@@ -143,31 +143,7 @@ const Hero = () => {
             </svg>
           </div>
         </div>
-
-        {/* New startup-focused highlight section */}
-        <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3 animate-fade-in-up animation-delay-800">
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow text-center">
-            <div className="text-2xl mb-2">🚀</div>
-            <div className="font-semibold text-gray-900">Fast & Eager</div>
-            <div className="text-sm text-gray-600">
-              Quick turnaround with fresh energy
-            </div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow text-center">
-            <div className="text-2xl mb-2">💡</div>
-            <div className="font-semibold text-gray-900">Modern Approach</div>
-            <div className="text-sm text-gray-600">
-              Latest tech, creative solutions
-            </div>
-          </div>
-          <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow text-center">
-            <div className="text-2xl mb-2">🤝</div>
-            <div className="font-semibold text-gray-900">Personal Touch</div>
-            <div className="text-sm text-gray-600">
-              Direct communication, real relationships
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   );
