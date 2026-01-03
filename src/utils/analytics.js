@@ -1,17 +1,5 @@
-import ReactGA from 'react-ga4';
-
-export const initGA = () => {
-  ReactGA.initialize(process.env.REACT_APP_GA_MEASUREMENT_ID);
-};
-
-export const logPageView = () => {
-  ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-};
-
 export const logEvent = (category, action, label) => {
-  ReactGA.event({
-    category: category,
-    action: action,
-    label: label,
-  });
-}; 
+  // In a real app, you would integrate with an analytics service like Google Analytics.
+  // For now, we'll just log to the console.
+  console.log(`Analytics Event: { Category: ${category}, Action: ${action}, Label: ${label} }`);
+};

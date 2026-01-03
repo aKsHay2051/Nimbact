@@ -13,9 +13,8 @@ const Contact = () => {
     submitting: false,
     info: { error: false, msg: null }
   });
-  const [errors, setErrors] = useState({}); // New state for validation errors
+  const [errors, setErrors] = useState({});
 
-  // Initialize EmailJS
   useEffect(() => {
     emailjs.init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
   }, []);
@@ -34,7 +33,7 @@ const Contact = () => {
         email: '',
         message: ''
       });
-      setErrors({}); // Clear errors on successful submission
+      setErrors({});
     } else {
       setStatus({
         submitted: false,
@@ -44,66 +43,36 @@ const Contact = () => {
     }
   };
 
-  // Basic validation function
   const validateForm = () => {
     const newErrors = {};
-    if (!formState.name.trim()) {
-      newErrors.name = 'Name is required.';
-    }
+    if (!formState.name.trim()) newErrors.name = 'Name is required.';
     if (!formState.email.trim()) {
       newErrors.email = 'Email is required.';
     } else if (!/\S+@\S+\.\S+/.test(formState.email)) {
       newErrors.email = 'Email address is invalid.';
     }
-    if (!formState.message.trim()) {
-      newErrors.message = 'Message is required.';
-    }
+    if (!formState.message.trim()) newErrors.message = 'Message is required.';
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setFormState(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-
-    // Clear specific error as user types
-    if (errors[name]) {
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        [name]: undefined
-      }));
-    }
-    // Also clear general submission status messages when user starts typing again after a submission attempt
-    if (status.info.msg) {
-        setStatus(prevStatus => ({
-            ...prevStatus,
-            info: { error: false, msg: null },
-            submitted: false // Reset submitted state as well
-        }));
-    }
+    setFormState(prevState => ({ ...prevState, [name]: value }));
+    if (errors[name]) setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
+    if (status.info.msg) setStatus(prevStatus => ({ ...prevStatus, info: { error: false, msg: null }, submitted: false }));
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-
-    // Run validation before attempting submission
     const isValid = validateForm();
-
     if (!isValid) {
-      setStatus(prevStatus => ({
-        ...prevStatus,
-        info: { error: true, msg: 'Please correct the errors in the form.' }
-      }));
+      setStatus(prevStatus => ({ ...prevStatus, info: { error: true, msg: 'Please correct the errors in the form.' } }));
       logEvent('Contact', 'Form Validation Failed', 'Contact Form');
-      return; // Stop submission if validation fails
+      return;
     }
 
     setStatus(prevStatus => ({ ...prevStatus, submitting: true }));
-
-    // Track form submission attempt
     logEvent('Contact', 'Form Submit', 'Contact Form');
 
     try {
@@ -111,239 +80,113 @@ const Contact = () => {
         from_name: formState.name,
         from_email: formState.email,
         message: formState.message,
-        to_name: 'DevLuz', // You can customize this
+        to_name: 'nimbact',
       };
-
       await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
         templateParams
       );
-
-      handleServerResponse(true, "Thanks for reaching out! We're excited to hear from you and will get back to you within 24 hours.");
+      handleServerResponse(true, "Thanks for reaching out! We'll get back to you within 24 hours.");
     } catch (error) {
       console.error('Failed to send email:', error);
-      handleServerResponse(
-        false,
-        error.message || "Oops! Something went wrong. Please try again or reach out via WhatsApp - we're always available there!"
-      );
+      handleServerResponse(false, error.message || "Oops! Something went wrong. Please try again.");
     }
   };
 
   const handleWhatsAppClick = () => {
     logEvent('Contact', 'Click', 'WhatsApp Button');
-    // ... existing logic
   };
 
   return (
     <>
-      {/* WhatsApp Float Button */}
       <a
         href={`https://wa.me/${whatsappNumber}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="
-          fixed bottom-8 right-8 z-50
-          flex items-center justify-center
-          w-14 h-14 rounded-full
-          bg-emerald-500 hover:bg-emerald-600 {/* Changed to vibrant green */}
-          text-white shadow-lg
-          transition-all duration-300 hover:scale-110
-          hover:shadow-xl
-          group
-        "
+        className="fixed bottom-8 right-8 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-gray-900 hover:bg-black text-white shadow-lg transition-transform duration-300 hover:scale-110"
         onClick={handleWhatsAppClick}
       >
-        <svg
-          className="w-7 h-7"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
+        <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
-        <span className="
-          absolute right-16
-          bg-white text-gray-700
-          px-4 py-2 rounded-lg shadow-lg
-          opacity-0 group-hover:opacity-100
-          pointer-events-none
-          transition-opacity duration-300
-          whitespace-nowrap
-          text-sm font-medium
-        ">
-          Quick chat with us!
-        </span>
       </a>
 
-      <section id="contact" className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 z-0">
-          {/* Changed gradient colors to reflect logo palette */}
-          <div className="absolute w-96 h-96 -top-48 right-0 bg-gradient-to-br from-emerald-100 to-blue-200 rounded-full mix-blend-multiply opacity-70 animate-blob"></div>
-          <div className="absolute w-96 h-96 bottom-48 -left-48 bg-gradient-to-br from-blue-100 to-emerald-200 rounded-full mix-blend-multiply opacity-70 animate-blob animation-delay-2000"></div>
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            {/* Heading gradient from logo's deep blue to vibrant green */}
-            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-blue-900 to-emerald-600 bg-clip-text text-transparent sm:text-4xl">
-              Ready to Start Something Great?
-            </h2>
-            <p className="mt-4 text-xl text-gray-600">
-              We'd love to hear about your project! Let's chat and see how we can help bring your ideas to life.
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              Quick response guaranteed - we're always excited to connect with new clients!
+      <section id="contact" className="py-20 bg-gray-50 font-inter">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900">Get in Touch</h2>
+            <p className="mt-4 text-lg text-gray-600">
+              Have a project in mind or just want to say hello? I'd love to hear from you.
             </p>
           </div>
 
-          {/* Divider */}
-          <div className="mt-12 mb-8 flex items-center justify-center">
-            {/* Divider gradient changed to subtly include logo colors */}
-            <div className="h-px w-full max-w-sm bg-gradient-to-r from-transparent via-blue-200 to-transparent"></div>
-            <span className="mx-4 text-gray-400"> reach out directly</span>
-            <div className="h-px w-full max-w-sm bg-gradient-to-r from-transparent via-emerald-200 to-transparent"></div>
-          </div>
-
-          <div className="mt-8 max-w-3xl mx-auto">
-            <div className="space-y-8">
-              {/* Name Input */}
-              <div className="relative">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={formState.name}
-                  onChange={handleChange}
-                  required
-                  className={`
-                    peer w-full px-4 py-3 rounded-lg border-2
-                    bg-white/70 backdrop-blur-sm
-                    transition-all duration-300 outline-none
-                    border-gray-200 focus:border-emerald-400 focus:shadow-lg
-                    ${errors.name ? 'border-red-500' : ''} {/* Add red border on error */}
-                  `}
-                  placeholder=" "
-                  disabled={status.submitting}
-                />
-                <label
-                  htmlFor="name"
-                  className={`
-                    absolute left-4 -top-2.5 text-sm bg-white px-2
-                    transition-all duration-200 pointer-events-none
-                    ${formState.name ? 'text-gray-600' : 'text-gray-500'}
-                    ${errors.name ? 'text-red-500' : ''} {/* Label color on error */}
-                  `}
-                >
-                  Your Name
-                </label>
-                {errors.name && <p className="mt-1 text-red-500 text-xs">{errors.name}</p>} {/* Error message */}
+          <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    value={formState.name}
+                    onChange={handleChange}
+                    disabled={status.submitting}
+                    className={`block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:ring-gray-800 focus:border-gray-800 sm:text-sm ${errors.name ? 'border-red-500' : ''}`}
+                  />
+                </div>
+                {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name}</p>}
               </div>
 
-              {/* Email Input */}
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                  required
-                  className={`
-                    peer w-full px-4 py-3 rounded-lg border-2
-                    bg-white/70 backdrop-blur-sm
-                    transition-all duration-300 outline-none
-                    border-gray-200 focus:border-emerald-400 focus:shadow-lg
-                    ${errors.email ? 'border-red-500' : ''} {/* Add red border on error */}
-                  `}
-                  placeholder=" "
-                  disabled={status.submitting}
-                />
-                <label
-                  htmlFor="email"
-                  className={`
-                    absolute left-4 -top-2.5 text-sm bg-white px-2
-                    transition-all duration-200 pointer-events-none
-                    ${formState.email ? 'text-gray-600' : 'text-gray-500'}
-                    ${errors.email ? 'text-red-500' : ''} {/* Label color on error */}
-                  `}
-                >
-                  Email Address
-                </label>
-                {errors.email && <p className="mt-1 text-red-500 text-xs">{errors.email}</p>} {/* Error message */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <div className="mt-1">
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    disabled={status.submitting}
+                    className={`block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:ring-gray-800 focus:border-gray-800 sm:text-sm ${errors.email ? 'border-red-500' : ''}`}
+                  />
+                </div>
+                {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
               </div>
 
-              {/* Message Input */}
-              <div className="relative">
-                <textarea
-                  name="message"
-                  id="message"
-                  value={formState.message}
-                  onChange={handleChange}
-                  rows="4"
-                  required
-                  className={`
-                    peer w-full px-4 py-3 rounded-lg border-2
-                    bg-white/70 backdrop-blur-sm
-                    transition-all duration-300 outline-none resize-none
-                    border-gray-200 focus:border-emerald-400 focus:shadow-lg
-                    ${errors.message ? 'border-red-500' : ''} {/* Add red border on error */}
-                  `}
-                  placeholder=" "
-                  disabled={status.submitting}
-                />
-                <label
-                  htmlFor="message"
-                  className={`
-                    absolute left-4 -top-2.5 text-sm bg-white px-2
-                    transition-all duration-200 pointer-events-none
-                    ${formState.message ? 'text-gray-600' : 'text-gray-500'}
-                    ${errors.message ? 'text-red-500' : ''} {/* Label color on error */}
-                  `}
-                >
-                  Tell us about your project
-                </label>
-                {errors.message && <p className="mt-1 text-red-500 text-xs">{errors.message}</p>} {/* Error message */}
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
+                <div className="mt-1">
+                  <textarea
+                    name="message"
+                    id="message"
+                    rows="4"
+                    value={formState.message}
+                    onChange={handleChange}
+                    disabled={status.submitting}
+                    className={`block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:ring-gray-800 focus:border-gray-800 sm:text-sm resize-none ${errors.message ? 'border-red-500' : ''}`}
+                  />
+                </div>
+                {errors.message && <p className="mt-2 text-sm text-red-600">{errors.message}</p>}
               </div>
 
-              {/* Status Message */}
               {status.info.msg && (
-                <div className={`
-                  text-sm px-4 py-3 rounded-lg
-                  ${status.info.error ? 'bg-red-50 text-red-800' : 'bg-emerald-50 text-emerald-800'} {/* Success message background */}
-                  animate-fade-in
-                `}>
+                <div className={`text-sm text-center px-4 py-3 rounded-md ${status.info.error ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
                   {status.info.msg}
                 </div>
               )}
 
-              {/* Submit Button */}
-              <div className="flex justify-center">
+              <div className="text-center pt-2">
                 <button
-                  onClick={handleSubmit}
-                  disabled={status.submitting} // Re-enabled
-                  className={`
-                    relative w-full sm:w-auto px-8 py-3 rounded-lg font-medium text-white
-                    transition-all duration-300 transform
-                    ${status.submitting ? 'bg-gray-400' : 'bg-gradient-to-r from-blue-700 to-emerald-600 hover:from-blue-800 hover:to-emerald-700'} {/* Main button gradient from logo colors */}
-                    hover:shadow-lg hover:-translate-y-1
-                    disabled:cursor-not-allowed disabled:hover:transform-none
-                  `}
+                  type="submit"
+                  disabled={status.submitting}
+                  className="w-full inline-flex items-center justify-center px-8 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gray-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 disabled:bg-gray-400 transition-colors"
                 >
-                  <span className={`transition-opacity duration-200 ${status.submitting ? 'opacity-0' : 'opacity-100'}`}>
-                    {status.submitted ? 'Message Sent! 🎉' : 'Let\'s Connect!'}
-                  </span>
-                  {status.submitting && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                    </div>
-                  )}
+                  {status.submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </section>
